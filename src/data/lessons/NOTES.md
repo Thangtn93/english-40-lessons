@@ -101,11 +101,13 @@ Khi chỉnh sửa/biên soạn `extra` cho bất kỳ bài học nào, cần th�
 1) Sinh lại audio cho bài vừa chỉnh sửa
    - Mục đích: tạo/ cập nhật các file `.wav` tương ứng để UI phát âm.
    - Vị trí output: `public/audio/lessons/lXX/...` (ví dụ: `l02` cho bài 2).
-   - Dùng script có sẵn theo bài, ví dụ cho bài 2:
+   - Ưu tiên dùng script tổng quát theo `LessonId` để giảm thao tác:
      - PowerShell (Windows):
-       - `powershell -ExecutionPolicy Bypass -File scripts/l02_generate_audio.ps1 -Rate 0 -Volume 100 -Culture en-US -OutDir "public/audio/lessons/l02"`
-     - Tham số gợi ý:
-       - `-Rate` (tốc độ đọc, 0 mặc định), `-Volume` (0–100), `-Culture` (giọng đọc, ví dụ `en-US`), `-OutDir` (thư mục đầu ra).
+       - `powershell -ExecutionPolicy Bypass -File scripts/generate_audio.ps1 -LessonId 07 -Rate 0 -Volume 100 -Culture en-US`
+       - Trong đó `-LessonId` là mã bài (2 chữ số), ví dụ `07`, `02`.
+     - Tham số tùy chọn:
+       - `-Rate` (tốc độ đọc, 0 mặc định), `-Volume` (0–100), `-Culture` (giọng đọc, ví dụ `en-US`), `-OutRoot` (thư mục gốc đầu ra, mặc định `public/audio/lessons`).
+   - Vẫn có thể dùng script theo bài cũ (ví dụ `scripts/l02_generate_audio.ps1`) nếu cần, nhưng khuyến nghị chuyển sang script tổng quát.
    - Lưu ý/pitfalls:
      - Script hiện dựa vào cấu trúc khóa/nội dung trong bài; nếu bạn thêm từ vựng/mẫu câu mới, cần cập nhật script tương ứng (hoặc chuyển sang script tổng quát `generate_audio.ps1` theo `LessonId` khi sẵn sàng).
      - Hệ thống đọc giọng dùng `System.Speech` trên Windows; bảo đảm chạy trong PowerShell và có quyền `ExecutionPolicy Bypass`.
