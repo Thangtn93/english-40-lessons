@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { lessons } from "../data/lessons";
-import { extraByLesson, ensureMinimumContent } from "../data/generators";
+import type { ExtraContent } from "../data/lessonTypes";
 
 export default function Lesson() {
   const params = useParams();
@@ -16,8 +16,8 @@ export default function Lesson() {
     );
   }
 
-  // Ưu tiên dữ liệu inline trong từng bài; fallback sang extraByLesson nếu chưa có
-  const extra = ensureMinimumContent(id, lesson.title, lesson.extra ?? extraByLesson[id]);
+  // Chỉ dùng dữ liệu biên soạn thủ công trong từng bài
+  const extra: ExtraContent = lesson.extra ?? {};
 
   return (
     <div className="container">
