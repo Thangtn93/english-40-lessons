@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import InlineAudio from "../components/InlineAudio";
 import { lessons } from "../data/lessons";
 import type { ExtraContent } from "../data/lessonTypes";
@@ -38,38 +38,68 @@ export default function Lesson() {
     setStopVersion((v) => v + 1);
   };
 
+  // Tabs setup: xác định các tab khả dụng theo dữ liệu bài học
+  const tabs = useMemo(() => {
+    const items: { key: string; label: string; show: boolean }[] = [
+      { key: "overview", label: "Tổng quan", show: true },
+      { key: "vocab", label: "Từ vựng", show: Boolean(extra.vocabularyBasic?.length || extra.vocabularyIT?.length || extra.vocabulary?.length) },
+      { key: "patterns", label: "Mẫu câu", show: Boolean(extra.sentencePatterns?.length) },
+      { key: "situations", label: "Tình huống", show: Boolean(extra.situations?.length) },
+      { key: "practice", label: "Luyện tập", show: Boolean(extra.practice?.length) },
+    ];
+    return items.filter(i => i.show);
+  }, [extra]);
+  const [tab, setTab] = useState<string>(() => (tabs[0]?.key || "overview"));
+
   return (
     <div className="container">
       <nav className="breadcrumb">
-        <Link to="/">← Về trang chủ</Link>
+        <Link to="/" className="iconBtn" aria-label="Về trang chủ" title="Về trang chủ">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 19l-7-7m0 0 7-7m-7 7h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="srOnly">Về trang chủ</span>
+        </Link>
       </nav>
       <article className="lesson">
         <header className="lessonHeader">
           <span className="badge">Bài {lesson.id}</span>
           <h1>{lesson.title}</h1>
         </header>
-        {/* Trình phát inline sẽ xuất hiện cạnh từng mục */}
-        <section>
-          <h3>Nội dung chính</h3>
-          <p>{lesson.content}</p>
-        </section>
-        {lesson.outcome && (
+        {/* Tab bar */}
+        <div className="tabs">
+          {tabs.map(t => (
+            <button key={t.key} className={`tab ${tab === t.key ? 'active' : ''}`} onClick={() => setTab(t.key)}>
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Nội dung theo tab */}
+        {tab === 'overview' && (
           <section>
-            <h3>Kết quả đạt được</h3>
-            <p>{lesson.outcome}</p>
+            <h3>Nội dung chính</h3>
+            <p>{lesson.content}</p>
+            {lesson.outcome && (
+              <div style={{ marginTop: 12 }}>
+                <h3>Kết quả đạt được</h3>
+                <p>{lesson.outcome}</p>
+              </div>
+            )}
+            {lesson.tasks && lesson.tasks.length > 0 && (
+              <div style={{ marginTop: 12 }}>
+                <h3>Nhiệm vụ chính</h3>
+                <ul>
+                  {lesson.tasks.map((t, i) => (
+                    <li key={i}>{t}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </section>
         )}
-        {lesson.tasks && lesson.tasks.length > 0 && (
-          <section>
-            <h3>Nhiệm vụ chính</h3>
-            <ul>
-              {lesson.tasks.map((t, i) => (
-                <li key={i}>{t}</li>
-              ))}
-            </ul>
-          </section>
-        )}
-        {(extra.vocabularyBasic || extra.vocabularyIT || (extra.vocabulary && extra.vocabulary.length > 0)) && (
+
+        {tab === 'vocab' && (
           <section>
             {extra.vocabularyBasic && extra.vocabularyBasic.length > 0 && (
               <div>
@@ -92,7 +122,7 @@ export default function Lesson() {
               </div>
             )}
             {extra.vocabularyIT && extra.vocabularyIT.length > 0 && (
-              <div>
+              <div style={{ marginTop: 12 }}>
                 <h3>Từ vựng chuyên ngành IT</h3>
                 <ul>
                   {extra.vocabularyIT.map((v, i) => (
@@ -126,7 +156,8 @@ export default function Lesson() {
             )}
           </section>
         )}
-        {extra.sentencePatterns && extra.sentencePatterns.length > 0 && (
+
+        {tab === 'patterns' && extra.sentencePatterns && extra.sentencePatterns.length > 0 && (
           <section>
             <h3>Các mẫu câu thường dùng</h3>
             <ul>
@@ -144,10 +175,10 @@ export default function Lesson() {
                 </li>
               ))}
             </ul>
-            
           </section>
         )}
-        {extra.situations && extra.situations.length > 0 && (
+
+        {tab === 'situations' && extra.situations && extra.situations.length > 0 && (
           <section>
             <h3>Các tình huống thường gặp</h3>
             <ul>
@@ -160,7 +191,8 @@ export default function Lesson() {
             </ul>
           </section>
         )}
-        {extra.practice && extra.practice.length > 0 && (
+
+        {tab === 'practice' && extra.practice && extra.practice.length > 0 && (
           <section>
             <h3>Luyện tập</h3>
             <ul>
@@ -185,7 +217,6 @@ export default function Lesson() {
                 </li>
               ))}
             </ul>
-            
           </section>
         )}
       </article>

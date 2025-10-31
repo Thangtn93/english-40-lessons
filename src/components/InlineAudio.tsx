@@ -87,7 +87,7 @@ export default function InlineAudio({ src, active, stopVersion, onStart, onStop,
 
   return (
     <div className={`audioItem${active ? " active" : ""}`}> 
-      <button className="btn small" onClick={togglePlay}>{isPlaying ? "Tạm dừng" : "Nghe"}</button>
+      <button className="btn bw small" onClick={togglePlay}>{isPlaying ? "Tạm dừng" : "Nghe"}</button>
       <div className="audioControls">
         <span className="time">{formatTime(currentTime)} / {formatTime(duration)}</span>
         <input

@@ -1,15 +1,16 @@
 :root {
-  --bg: #0f172a;
-  --fg: #e2e8f0;
-  --muted: #94a3b8;
-  --accent: #60a5fa;
-  --card: #111827;
-  --border: #1f2937;
+  /* Chủ đề 3 màu: đen / trắng / xanh lá */
+  --bg: #000000;        /* nền đen */
+  --fg: #ffffff;        /* chữ trắng */
+  --accent: #00e676;    /* xanh lá điểm nhấn (Material A400) */
+  --border: #00c853;    /* xanh lá đậm cho viền (Material A700) */
+  --card: #000000;      /* nền thẻ đen */
+  --muted: #ffffff;     /* toàn bộ chữ trắng, kể cả chữ phụ */
 }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+  font-family: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
     Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
   background: var(--bg);
   color: var(--fg);
@@ -69,10 +70,12 @@ body {
 
 .badge {
   display: inline-block;
-  padding: 6px 10px;
-  background: #0ea5e9;
+  padding: 8px 12px;
+  background: var(--accent);
   border-radius: 999px;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 0.95rem;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 6px 12px rgba(0, 200, 83, 0.25);
 }
 
 .cardContent {
@@ -86,24 +89,59 @@ body {
 
 .lessonHeader h1 {
   margin: 8px 0 0 0;
+  font-size: 2.4rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-weight: 800;
+}
+.lessonHeader h1::after {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin-top: 8px;
 }
 
 .lesson section {
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 .lesson ul {
-  margin: 8px 0 0 18px;
+  margin: 10px 0 0 18px;
+}
+
+/* Heading phần theo Material (vạch nhấn xanh) */
+.lesson section h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0;
+  padding-left: 12px;
+  position: relative;
+}
+.lesson section h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 24px;
+  background: var(--accent);
+  border-radius: 3px;
 }
 
 .btn {
   display: inline-block;
   padding: 10px 12px;
   background: var(--accent);
-  color: #0b1220;
+  color: #ffffff;
   border-radius: 8px;
   text-decoration: none;
 }
+.btn.small { padding: 6px 10px; font-size: 0.9rem; }
+.btn.bw { background: #000000; color: #ffffff; border: 1px solid #ffffff; }
 
 /* Bổ sung style nhẹ cho phần ví dụ/mẫu câu */
 .muted {
@@ -111,7 +149,7 @@ body {
 }
 
 code {
-  background: rgba(96, 165, 250, 0.12);
+  background: rgba(0, 230, 118, 0.12); /* xanh lá mờ */
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 2px 6px;
@@ -130,7 +168,33 @@ code {
   gap: 8px;
 }
 .audioItem .audioControls input[type="range"] {
-  width: 160px;
+  width: 220px;
+}
+.audioItem input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  background: #ffffff;
+  border-radius: 999px;
+}
+.audioItem input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #000000;
+}
+.audioItem select {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+.audioItem .repeat input[type="checkbox"] {
+  accent-color: #ffffff; /* màu tick trắng */
 }
 .audioItem .audioControls .time {
   font-size: 12px;
@@ -138,4 +202,51 @@ code {
 }
 .audioItem.active .audioControls .time {
   color: var(--accent);
+}
+
+/* Nút icon quay về trang chủ */
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: #000000;
+}
+.iconBtn:hover { background: var(--accent); color: #000000; }
+.iconBtn svg { width: 18px; height: 18px; }
+.srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  border-bottom: 1px solid var(--fg);
+  padding-bottom: 10px;
+}
+.tab {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 999px;
+  padding: 8px 16px;
+  position: relative;
+}
+.tab.active {
+  background: #ffffff;
+  color: #000000;
+}
+.tab.active::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: -11px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
 }
