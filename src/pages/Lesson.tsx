@@ -16,8 +16,8 @@ export default function Lesson() {
     );
   }
 
-  // Chỉ gọi đảm bảo nội dung tối thiểu khi chắc chắn có lesson
-  const extra = ensureMinimumContent(id, lesson.title, extraByLesson[id]);
+  // Ưu tiên dữ liệu inline trong từng bài; fallback sang extraByLesson nếu chưa có
+  const extra = ensureMinimumContent(id, lesson.title, lesson.extra ?? extraByLesson[id]);
 
   return (
     <div className="container">
