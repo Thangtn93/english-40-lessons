@@ -6,7 +6,9 @@ export const lesson1: Lesson = {
   content: "Các mẫu câu chào đón khách hàng/đối tác/vendors khi đến thăm công ty.",
   outcome: "Tự tin đón tiếp, giao tiếp và hỏi thăm về chuyến thăm.",
   extra: {
-    vocabulary: [
+    vocabularyBasic: [
+      { term: "hello", meaning: "xin chào", example: "Hello, welcome to our office!" },
+      { term: "welcome", meaning: "chào mừng", example: "Welcome! We’re happy to host you today." },
       { term: "greet", meaning: "chào hỏi", example: "We greet visitors at the lobby." },
       { term: "reception", meaning: "lễ tân", example: "Please wait at the reception." },
       { term: "badge", meaning: "thẻ đeo", example: "Collect your visitor badge here." },
@@ -27,6 +29,21 @@ export const lesson1: Lesson = {
       { term: "itinerary", meaning: "lịch trình", example: "Here’s today’s itinerary." },
       { term: "agenda", meaning: "chương trình", example: "First item on the agenda is a tour." },
       { term: "meeting room", meaning: "phòng họp", example: "The meeting room is on the 3rd floor." },
+      { term: "seat", meaning: "chỗ ngồi", example: "Please take a seat." },
+      { term: "restroom", meaning: "nhà vệ sinh", example: "The restroom is on the left." },
+      { term: "elevator", meaning: "thang máy", example: "Take the elevator to the 3rd floor." },
+      { term: "stairs", meaning: "cầu thang", example: "You can use the stairs if you like." },
+      { term: "left", meaning: "bên trái", example: "Turn left at the lobby." },
+      { term: "right", meaning: "bên phải", example: "The meeting room is on the right." },
+      { term: "wifi", meaning: "wifi", example: "The guest wifi is 'Company-Guest'." },
+      { term: "password", meaning: "mật khẩu", example: "The wifi password is 'welcome2025'." },
+      { term: "guide", meaning: "hướng dẫn", example: "I’ll guide you through the agenda." },
+      { term: "show", meaning: "cho xem/giới thiệu", example: "Let me show you our product demo." },
+      { term: "start", meaning: "bắt đầu", example: "We will start at ten o’clock." },
+      { term: "finish", meaning: "kết thúc", example: "We’ll finish by eleven thirty." },
+      { term: "visitor log", meaning: "sổ đăng ký khách", example: "Please sign the visitor log here." },
+    ],
+    vocabularyIT: [
       { term: "stakeholder", meaning: "bên liên quan", example: "Align stakeholders before kickoff." },
       { term: "requirement", meaning: "yêu cầu", example: "Gather requirements in discovery phase." },
       { term: "deliverable", meaning: "sản phẩm bàn giao", example: "The deliverable is a working prototype." },
@@ -110,6 +127,17 @@ export const lesson1: Lesson = {
       { pattern: "Please sign in at the front desk.", example: "Please sign in at the front desk before we begin." },
       { pattern: "We appreciate your time.", example: "We appreciate your time and interest." },
       { pattern: "Enjoy the tour!", example: "Enjoy the tour!" },
+      { pattern: "Hi, I’m [name].", example: "Hi, I’m Minh." },
+      { pattern: "Nice to meet you.", example: "Nice to meet you." },
+      { pattern: "Please take a seat.", example: "Please take a seat near the screen." },
+      { pattern: "The restroom is on the [left/right].", example: "The restroom is on the left." },
+      { pattern: "Our guest wifi is [name].", example: "Our guest wifi is Company-Guest." },
+      { pattern: "The password is [text].", example: "The password is welcome2025." },
+      { pattern: "We’ll start at [time].", example: "We’ll start at 10:00." },
+      { pattern: "We’ll finish by [time].", example: "We’ll finish by 11:30." },
+      { pattern: "Let me show you [place/thing].", example: "Let me show you the demo area." },
+      { pattern: "This way, please.", example: "This way, please." },
+      { pattern: "If you need help, just ask.", example: "If you need help, just ask." },
     ],
     situations: [
       { title: "Đến quầy lễ tân", example: "Chào khách và hướng dẫn ký tên nhận badge." },
@@ -122,6 +150,11 @@ export const lesson1: Lesson = {
       { title: "Tiễn khách", example: "Cảm ơn và tiễn khách ra sảnh/lối ra." },
       { title: "Trao đổi lịch trình", example: "Xác nhận các mốc thời gian trong ngày." },
       { title: "Xử lý phát sinh", example: "Giải quyết thay đổi lịch đột xuất nếu có." },
+      { title: "Hướng dẫn wifi cho khách", example: "Cung cấp tên mạng và mật khẩu đơn giản, dễ nhớ." },
+      { title: "Chỉ đường đơn giản", example: "Giải thích ngắn gọn: rẽ trái, rẽ phải, thang máy/cầu thang." },
+      { title: "Giới thiệu phòng demo", example: "Dẫn khách tới khu vực demo và mô tả nhanh." },
+      { title: "Sắp xếp chỗ ngồi", example: "Mời khách ngồi ở vị trí nhìn rõ màn hình và loa." },
+      { title: "Nhắc giờ bắt đầu/kết thúc", example: "Nêu rõ khung giờ để khách chủ động sắp xếp." },
     ],
     practice: [
       {
@@ -135,6 +168,54 @@ export const lesson1: Lesson = {
         prompt: "Chuẩn bị bài nói 1–2 phút chào mừng và giới thiệu agenda.",
         sample:
           "Welcome to our office! Today’s agenda includes a quick tour, a product demo, and Q&A. We hope you enjoy the visit and feel free to ask any questions along the way.",
+      },
+      {
+        title: "Hội thoại ngắn chào khách",
+        prompt: "Viết hội thoại 6–8 câu dùng từ vựng/mẫu câu đơn giản (chào, mời ngồi, chỉ đường restroom, wifi).",
+        sample:
+          "A: Hello! Welcome to our office.\nB: Nice to meet you.\nA: Please take a seat. The restroom is on the left.\nB: Thank you.\nA: Our guest wifi is Company-Guest. The password is welcome2025.\nB: Great, thanks!\nA: We’ll start at 10:00 and finish by 11:30.\nB: Sounds good!",
+      },
+      {
+        title: "Thay thế cụm từ dễ hiểu",
+        prompt: "Viết lại 5 câu chào đón theo cách ngắn gọn, dễ hiểu hơn (ví dụ: 'Would you like any refreshments?' → 'Would you like water or coffee?').",
+        sample:
+          "1) Welcome to our office! → Hi, welcome!\n2) Would you like any refreshments? → Would you like water or coffee?\n3) May I offer you assistance? → If you need help, just ask.\n4) Shall we commence the tour? → Shall we start the tour?\n5) Please proceed to the conference room. → This way, please.",
+      },
+      {
+        title: "Brief IT security cho khách",
+        prompt: "Soạn lời nhắc ngắn gọn về chính sách bảo mật cho khách (wifi khách, hạn chế mạng nội bộ, NDA, chính sách chụp ảnh).",
+        sample:
+          "Welcome! Before we start, a quick security brief: Please use our guest wifi (Company-Guest). Access to internal networks is restricted. Kindly avoid taking photos in restricted areas. We’ll collect your NDA signature at the front desk before the tour.",
+      },
+      {
+        title: "Checklist tech-check trước demo",
+        prompt: "Chuẩn bị checklist kiểm tra thiết bị trước khi demo (HDMI/Projector/Âm thanh/Internet) và kịch bản dự phòng.",
+        sample:
+          "Tech-check: 1) HDMI connected, 2) Projector on, 3) Audio working, 4) Internet stable, 5) Backup laptop ready.\nFallback script: If projector fails, we’ll switch to the TV in Room B or share screen via Zoom."
+      },
+      {
+        title: "Xử lý lịch sự khi khách xin cắm USB",
+        prompt: "Viết hội thoại từ chối cắm USB vào máy công ty theo chính sách IT, đề xuất phương án thay thế.",
+        sample:
+          "Visitor: Can I plug my USB into your laptop?\nHost: I’m sorry, our IT policy doesn’t allow external USBs.\nHost: If you’d like, we can upload the file via a secure link or email it to our shared inbox."
+      },
+      {
+        title: "Dẫn khách đến buổi họp với PM/Dev team",
+        prompt: "Viết lời dẫn ngắn giới thiệu agenda buổi họp (sprint overview, product demo, Q&A).",
+        sample:
+          "This way, please. Today’s session includes a sprint overview, a short product demo, and Q&A with our PM and dev team. If you have any questions, feel free to ask anytime."
+      },
+      {
+        title: "Sự cố projector giữa tour",
+        prompt: "Viết kịch bản xử lý nhanh khi projector hỏng giữa buổi (giữ bình tĩnh, chuyển phương án).",
+        sample:
+          "I’m sorry, our projector isn’t working right now. Let’s move to the demo area with a TV, or I can share the screen from my laptop. We’ll continue without delay."
+      },
+      {
+        title: "NDA và visitor log",
+        prompt: "Soạn lời hướng dẫn khách ký NDA và ghi sổ khách trước khi bắt đầu.",
+        sample:
+          "Before we begin, please sign the NDA and the visitor log here. It only takes a minute. Thank you for your cooperation."
       },
     ],
   },

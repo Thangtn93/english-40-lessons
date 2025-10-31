@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { useState } from "react";
 import { lessons } from "../data/lessons";
 import type { ExtraContent } from "../data/lessonTypes";
 
@@ -18,6 +19,28 @@ export default function Lesson() {
 
   // Chỉ dùng dữ liệu biên soạn thủ công trong từng bài
   const extra: ExtraContent = lesson.extra ?? {};
+
+  // Audio playback helpers for pre-generated files in public/audio/lessons/lXX
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
+  const stopAudio = () => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      setCurrentAudio(null);
+    }
+  };
+  const lessonFolder = `l${String(lesson.id).padStart(2, "0")}`;
+  const playAudio = (group: "vocab_basic" | "vocab_it" | "patterns" | "practice", indexZeroBased: number) => {
+    const fileIndex = String(indexZeroBased + 1).padStart(3, "0");
+    const url = `/audio/lessons/${lessonFolder}/${group}_${fileIndex}.wav`;
+    // Stop any existing audio
+    stopAudio();
+    const audio = new Audio(url);
+    audio.play().catch(() => {
+      // Fail silently; file may not exist for some lessons
+    });
+    setCurrentAudio(audio);
+  };
 
   return (
     <div className="container">
@@ -49,17 +72,49 @@ export default function Lesson() {
             </ul>
           </section>
         )}
-        {extra.vocabulary && extra.vocabulary.length > 0 && (
+        {(extra.vocabularyBasic || extra.vocabularyIT || (extra.vocabulary && extra.vocabulary.length > 0)) && (
           <section>
-            <h3>Từ vựng cần học</h3>
-            <ul>
-              {extra.vocabulary.map((v, i) => (
-                <li key={i}>
-                  <strong>{v.term}</strong> — {v.meaning}
-                  {v.example && <span className="muted"> · Ví dụ: {v.example}</span>}
-                </li>
-              ))}
-            </ul>
+            {extra.vocabularyBasic && extra.vocabularyBasic.length > 0 && (
+              <div>
+                <h3>Từ vựng cơ bản</h3>
+                <ul>
+                  {extra.vocabularyBasic.map((v, i) => (
+                    <li key={`vb-${i}`}>
+                      <strong>{v.term}</strong> — {v.meaning}
+                      {v.example && <span className="muted"> · Ví dụ: {v.example}</span>}
+                      <button className="btn small" style={{ marginLeft: 8 }} onClick={() => playAudio("vocab_basic", i)}>Nghe</button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {extra.vocabularyIT && extra.vocabularyIT.length > 0 && (
+              <div>
+                <h3>Từ vựng chuyên ngành IT</h3>
+                <ul>
+                  {extra.vocabularyIT.map((v, i) => (
+                    <li key={`vi-${i}`}>
+                      <strong>{v.term}</strong> — {v.meaning}
+                      {v.example && <span className="muted"> · Ví dụ: {v.example}</span>}
+                      <button className="btn small" style={{ marginLeft: 8 }} onClick={() => playAudio("vocab_it", i)}>Nghe</button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {!extra.vocabularyBasic && !extra.vocabularyIT && extra.vocabulary && extra.vocabulary.length > 0 && (
+              <div>
+                <h3>Từ vựng cần học</h3>
+                <ul>
+                  {extra.vocabulary.map((v, i) => (
+                    <li key={i}>
+                      <strong>{v.term}</strong> — {v.meaning}
+                      {v.example && <span className="muted"> · Ví dụ: {v.example}</span>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </section>
         )}
         {extra.sentencePatterns && extra.sentencePatterns.length > 0 && (
@@ -70,9 +125,13 @@ export default function Lesson() {
                 <li key={i}>
                   <code>{p.pattern}</code>
                   {p.example && <span className="muted"> · Ví dụ: {p.example}</span>}
+                  <button className="btn small" style={{ marginLeft: 8 }} onClick={() => playAudio("patterns", i)}>Nghe</button>
                 </li>
               ))}
             </ul>
+            <div style={{ marginTop: 8 }}>
+              <button className="btn" onClick={stopAudio}>Dừng</button>
+            </div>
           </section>
         )}
         {extra.situations && extra.situations.length > 0 && (
@@ -96,6 +155,7 @@ export default function Lesson() {
                 <li key={i}>
                   <strong>{p.title}</strong>
                   <span className="muted"> · {p.prompt}</span>
+                  <button className="btn small" style={{ marginLeft: 8 }} onClick={() => playAudio("practice", i)}>Nghe mẫu</button>
                   {p.sample && (
                     <div className="muted" style={{ marginTop: 6 }}>
                       {p.sample.split("\n").map((line, idx) => (
@@ -106,9 +166,17 @@ export default function Lesson() {
                 </li>
               ))}
             </ul>
+            <div style={{ marginTop: 8 }}>
+              <button className="btn" onClick={stopAudio}>Dừng</button>
+            </div>
           </section>
         )}
       </article>
+      <footer style={{ marginTop: 16 }}>
+        {currentAudio && (
+          <button className="btn" onClick={stopAudio}>Dừng đọc</button>
+        )}
+      </footer>
     </div>
   );
 }

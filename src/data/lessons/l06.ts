@@ -1,5 +1,5 @@
 import type { Lesson } from "../lessonTypes";
-import { extraByLesson } from "../generators";
+
 
 export const lesson6: Lesson = {
   id: 6,

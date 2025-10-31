@@ -8,6 +8,10 @@ Các kiểu dữ liệu nằm ở `src/data/lessonTypes.ts`:
 
 ```ts
 export type ExtraContent = {
+  // Nhóm từ vựng: ưu tiên dùng 2 nhóm bên dưới
+  vocabularyBasic?: { term: string; meaning: string; example?: string }[]; // từ vựng cơ bản
+  vocabularyIT?: { term: string; meaning: string; example?: string }[];     // từ vựng chuyên ngành IT
+  // Fallback: nếu chưa phân nhóm, có thể dùng trường vocabulary (cũ)
   vocabulary?: { term: string; meaning: string; example?: string }[];
   sentencePatterns?: { pattern: string; example?: string }[];
   situations?: { title: string; example?: string }[];
@@ -60,9 +64,14 @@ export const lessonX: Lesson = {
   content: "...",
   outcome: "...",
   extra: {
-    vocabulary: [
+    // Khuyến nghị: dùng 2 nhóm từ vựng thay vì một mảng chung
+    vocabularyBasic: [
       { term: "...", meaning: "...", example: "..." },
     ],
+    vocabularyIT: [
+      { term: "...", meaning: "...", example: "..." },
+    ],
+    // Trường vocabulary (cũ) chỉ dùng khi thực sự cần fallback
     sentencePatterns: [
       { pattern: "...", example: "..." },
     ],
@@ -84,6 +93,61 @@ export const lessonX: Lesson = {
 - Tình huống gắn với công việc IT (họp, email, demo, thiết kế, sự cố...).
 - Bài tập có `prompt` rõ ràng; thêm `sample` nếu có.
 - Không trùng lặp nội dung giữa các bài lân cận; từ vựng/mẫu câu không bị lặp lại quá mức.
+
+## Bài 1 — Cấu trúc mẫu để tái sử dụng
+
+Mục tiêu: chuẩn hóa cách biên soạn, tách từ vựng thành hai nhóm và thiết kế luyện tập sinh động, để áp dụng cho các bài sau.
+
+```ts
+import type { Lesson } from "../lessonTypes";
+
+export const lesson1: Lesson = {
+  id: 1,
+  title: "Greeting Visitors",
+  content: "Các mẫu câu chào đón khách hàng/đối tác/vendors khi đến thăm công ty.",
+  outcome: "Tự tin đón tiếp, giao tiếp và hỏi thăm về chuyến thăm.",
+  extra: {
+    vocabularyBasic: [
+      { term: "hello", meaning: "xin chào", example: "Hello, welcome to our office!" },
+      { term: "reception", meaning: "lễ tân", example: "Please wait at the reception." },
+      { term: "restroom", meaning: "nhà vệ sinh", example: "The restroom is on the left." },
+      { term: "wifi", meaning: "wifi", example: "The guest wifi is 'Company-Guest'." },
+    ],
+    vocabularyIT: [
+      { term: "stakeholder", meaning: "bên liên quan", example: "Align stakeholders before kickoff." },
+      { term: "requirement", meaning: "yêu cầu", example: "Gather requirements in discovery phase." },
+      { term: "backlog", meaning: "danh sách việc tồn", example: "Refine backlog every sprint." },
+      { term: "CI/CD", meaning: "tích hợp/triển khai liên tục", example: "Enable CI/CD pipelines." },
+    ],
+    sentencePatterns: [
+      { pattern: "Welcome to [company]!", example: "Welcome to Trae AI!" },
+      { pattern: "This way, please.", example: "This way, please." },
+      { pattern: "Our guest wifi is [name].", example: "Our guest wifi is Company-Guest." },
+    ],
+    situations: [
+      { title: "Đến quầy lễ tân", example: "Chào khách và hướng dẫn ký tên nhận badge." },
+      { title: "Hướng dẫn wifi", example: "Cung cấp tên mạng và mật khẩu." },
+      { title: "Vào phòng họp", example: "Sắp xếp chỗ ngồi và bật thiết bị trình chiếu." },
+    ],
+    practice: [
+      {
+        title: "Checklist tech-check trước demo",
+        prompt: "Kiểm HDMI/Projector/Âm thanh/Internet và phương án dự phòng.",
+        sample: "HDMI connected · Projector on · Audio working · Internet stable · Backup ready",
+      },
+      {
+        title: "Brief IT security cho khách",
+        prompt: "Nhắc wifi khách, hạn chế mạng nội bộ, NDA, chính sách chụp ảnh.",
+        sample: "Please use our guest wifi. Internal network is restricted. NDA signing at front desk.",
+      },
+    ],
+  },
+};
+```
+
+Hướng dẫn áp dụng cho bài khác:
+- Luôn tách từ vựng thành `vocabularyBasic` và `vocabularyIT` để học dễ và sát công việc.
+- Mỗi mục có ví dụ ngắn gọn, tự nhiên; tình huống thực tế ngành IT; bài tập có `sample` để người học tham chiếu.
 
 ## Lưu ý về hiển thị
 
