@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { lessons } from "../data/lessons";
 import type { ExtraContent } from "../data/lessonTypes";
 
@@ -20,27 +20,35 @@ export default function Lesson() {
   // Chỉ dùng dữ liệu biên soạn thủ công trong từng bài
   const extra: ExtraContent = lesson.extra ?? {};
 
-  // Audio playback helpers for pre-generated files in public/audio/lessons/lXX
-  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
+  // Trình phát audio hiển thị thanh thời gian (sử dụng thẻ <audio>)
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [currentAudioSrc, setCurrentAudioSrc] = useState<string | null>(null);
+  const [nowPlaying, setNowPlaying] = useState<{ group: "vocab_basic" | "vocab_it" | "patterns" | "practice"; index: number } | null>(null);
   const stopAudio = () => {
-    if (currentAudio) {
-      currentAudio.pause();
-      currentAudio.currentTime = 0;
-      setCurrentAudio(null);
+    const el = audioRef.current;
+    if (el) {
+      el.pause();
+      el.currentTime = 0;
     }
+    setNowPlaying(null);
   };
   const lessonFolder = `l${String(lesson.id).padStart(2, "0")}`;
   const playAudio = (group: "vocab_basic" | "vocab_it" | "patterns" | "practice", indexZeroBased: number) => {
     const fileIndex = String(indexZeroBased + 1).padStart(3, "0");
     const baseUrl = import.meta.env.BASE_URL || "/";
     const url = `${baseUrl}audio/lessons/${lessonFolder}/${group}_${fileIndex}.wav`;
-    // Stop any existing audio
-    stopAudio();
-    const audio = new Audio(url);
-    audio.play().catch(() => {
-      // Fail silently; file may not exist for some lessons
-    });
-    setCurrentAudio(audio);
+    setCurrentAudioSrc(url);
+    setNowPlaying({ group, index: indexZeroBased });
+    // Tải và phát tự động bằng thẻ <audio>
+    setTimeout(() => {
+      const el = audioRef.current;
+      if (el) {
+        el.load();
+        el.play().catch(() => {
+          // Bỏ qua nếu file không tồn tại
+        });
+      }
+    }, 0);
   };
 
   return (
@@ -53,6 +61,18 @@ export default function Lesson() {
           <span className="badge">Bài {lesson.id}</span>
           <h1>{lesson.title}</h1>
         </header>
+        <section style={{ marginTop: 8 }}>
+          <h3>Trình phát âm thanh</h3>
+          <audio
+            ref={audioRef}
+            controls
+            src={currentAudioSrc ?? undefined}
+            style={{ width: "100%", maxWidth: 420 }}
+          />
+          <div style={{ marginTop: 8 }}>
+            <button className="btn" onClick={stopAudio}>Dừng</button>
+          </div>
+        </section>
         <section>
           <h3>Nội dung chính</h3>
           <p>{lesson.content}</p>
@@ -84,6 +104,9 @@ export default function Lesson() {
                       <strong>{v.term}</strong> — {v.meaning}
                       {v.example && <span className="muted"> · Ví dụ: {v.example}</span>}
                       <button className="btn small" style={{ marginLeft: 8 }} onClick={() => playAudio("vocab_basic", i)}>Nghe</button>
+                      {nowPlaying && nowPlaying.group === "vocab_basic" && nowPlaying.index === i && (
+                        <span className="muted" style={{ marginLeft: 8 }}>Đang phát…</span>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -98,6 +121,9 @@ export default function Lesson() {
                       <strong>{v.term}</strong> — {v.meaning}
                       {v.example && <span className="muted"> · Ví dụ: {v.example}</span>}
                       <button className="btn small" style={{ marginLeft: 8 }} onClick={() => playAudio("vocab_it", i)}>Nghe</button>
+                      {nowPlaying && nowPlaying.group === "vocab_it" && nowPlaying.index === i && (
+                        <span className="muted" style={{ marginLeft: 8 }}>Đang phát…</span>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -127,6 +153,9 @@ export default function Lesson() {
                   <code>{p.pattern}</code>
                   {p.example && <span className="muted"> · Ví dụ: {p.example}</span>}
                   <button className="btn small" style={{ marginLeft: 8 }} onClick={() => playAudio("patterns", i)}>Nghe</button>
+                  {nowPlaying && nowPlaying.group === "patterns" && nowPlaying.index === i && (
+                    <span className="muted" style={{ marginLeft: 8 }}>Đang phát…</span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -157,6 +186,9 @@ export default function Lesson() {
                   <strong>{p.title}</strong>
                   <span className="muted"> · {p.prompt}</span>
                   <button className="btn small" style={{ marginLeft: 8 }} onClick={() => playAudio("practice", i)}>Nghe mẫu</button>
+                  {nowPlaying && nowPlaying.group === "practice" && nowPlaying.index === i && (
+                    <span className="muted" style={{ marginLeft: 8 }}>Đang phát…</span>
+                  )}
                   {p.sample && (
                     <div className="muted" style={{ marginTop: 6 }}>
                       {p.sample.split("\n").map((line, idx) => (
@@ -174,7 +206,7 @@ export default function Lesson() {
         )}
       </article>
       <footer style={{ marginTop: 16 }}>
-        {currentAudio && (
+        {currentAudioSrc && (
           <button className="btn" onClick={stopAudio}>Dừng đọc</button>
         )}
       </footer>
