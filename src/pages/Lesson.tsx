@@ -32,7 +32,8 @@ export default function Lesson() {
   const lessonFolder = `l${String(lesson.id).padStart(2, "0")}`;
   const playAudio = (group: "vocab_basic" | "vocab_it" | "patterns" | "practice", indexZeroBased: number) => {
     const fileIndex = String(indexZeroBased + 1).padStart(3, "0");
-    const url = `/audio/lessons/${lessonFolder}/${group}_${fileIndex}.wav`;
+    const baseUrl = import.meta.env.BASE_URL || "/";
+    const url = `${baseUrl}audio/lessons/${lessonFolder}/${group}_${fileIndex}.wav`;
     // Stop any existing audio
     stopAudio();
     const audio = new Audio(url);
