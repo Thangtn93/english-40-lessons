@@ -39,7 +39,7 @@ UI hiển thị tại `src/pages/Lesson.tsx` sẽ tự động render nếu các
 - Không nhồi nhét từ vựng hiếm khó dùng; ưu tiên “dùng được ngay” trong công việc.
 - Kiểm tra chính tả/ngữ pháp và tính nhất quán thuật ngữ (API, SLA, KPI…).
 
-## Định lượng đề xuất
+## Định lượng tối thiểu
 
 - Mục tiêu dài hạn: ≥100 từ vựng, ≥20 mẫu câu, ≥10 tình huống, 1–2 bài mẫu (sample) cho phần bài tập.
 - Khi mới biên soạn: ưu tiên chất lượng và tính liên quan; có thể bắt đầu với 30–60 từ vựng, 15–25 mẫu câu, 8–12 tình huống, 2–3 bài tập.
