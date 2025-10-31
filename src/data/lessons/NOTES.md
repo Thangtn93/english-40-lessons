@@ -94,6 +94,39 @@ export const lessonX: Lesson = {
 - Bài tập có `prompt` rõ ràng; thêm `sample` nếu có.
 - Không trùng lặp nội dung giữa các bài lân cận; từ vựng/mẫu câu không bị lặp lại quá mức.
 
+## Sau khi biên soạn nội dung: Sinh audio, kiểm tra build và deploy
+
+Khi chỉnh sửa/biên soạn `extra` cho bất kỳ bài học nào, cần thực hiện quy trình sau để đồng bộ âm thanh và triển khai:
+
+1) Sinh lại audio cho bài vừa chỉnh sửa
+   - Mục đích: tạo/ cập nhật các file `.wav` tương ứng để UI phát âm.
+   - Vị trí output: `public/audio/lessons/lXX/...` (ví dụ: `l02` cho bài 2).
+   - Dùng script có sẵn theo bài, ví dụ cho bài 2:
+     - PowerShell (Windows):
+       - `powershell -ExecutionPolicy Bypass -File scripts/l02_generate_audio.ps1 -Rate 0 -Volume 100 -Culture en-US -OutDir "public/audio/lessons/l02"`
+     - Tham số gợi ý:
+       - `-Rate` (tốc độ đọc, 0 mặc định), `-Volume` (0–100), `-Culture` (giọng đọc, ví dụ `en-US`), `-OutDir` (thư mục đầu ra).
+   - Lưu ý/pitfalls:
+     - Script hiện dựa vào cấu trúc khóa/nội dung trong bài; nếu bạn thêm từ vựng/mẫu câu mới, cần cập nhật script tương ứng (hoặc chuyển sang script tổng quát `generate_audio.ps1` theo `LessonId` khi sẵn sàng).
+     - Hệ thống đọc giọng dùng `System.Speech` trên Windows; bảo đảm chạy trong PowerShell và có quyền `ExecutionPolicy Bypass`.
+
+2) Kiểm tra UI nhanh trên dev server (tùy chọn nhưng khuyến nghị)
+   - `npm run dev` và mở `http://localhost:517x/lesson/X` để nghe thử.
+   - Đảm bảo các mục từ vựng/mẫu câu/tình huống/bài tập hiển thị đúng và audio phát bình thường.
+
+3) Kiểm tra build
+   - Chạy: `npm run build`
+   - Xác nhận build thành công, không lỗi TypeScript/ESLint.
+
+4) Commit và deploy
+   - `git add -A && git commit -m "Update content & audio for lesson X" && git push origin main`
+   - GitHub Pages sẽ tự động redeploy theo workflow hiện có.
+
+Best practices
+- Giữ tên file audio và đường dẫn nhất quán để tránh lỗi 404.
+- Khi thêm nhiều mục mới, nên chạy lại toàn bộ audio cho bài để đảm bảo đồng bộ.
+- Nếu có kế hoạch dùng script tổng quát (nhận `LessonId`), hãy ghi rõ hướng dẫn sử dụng và tham số trong thư mục `scripts/`.
+
 ## Bài 1 — Cấu trúc mẫu để tái sử dụng
 
 Mục tiêu: chuẩn hóa cách biên soạn, tách từ vựng thành hai nhóm và thiết kế luyện tập sinh động, để áp dụng cho các bài sau.
