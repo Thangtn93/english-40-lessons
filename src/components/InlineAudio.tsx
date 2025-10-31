@@ -29,6 +29,13 @@ export default function InlineAudio({ src, active, stopVersion, onStart, onStop,
     el.playbackRate = rate;
   }, [rate]);
 
+  // Đồng bộ trạng thái repeat với thuộc tính loop của thẻ audio
+  useEffect(() => {
+    const el = audioRef.current;
+    if (!el) return;
+    el.loop = repeat;
+  }, [repeat]);
+
   useEffect(() => {
     const el = audioRef.current;
     if (!el) return;
@@ -71,12 +78,11 @@ export default function InlineAudio({ src, active, stopVersion, onStart, onStop,
     const el = audioRef.current;
     if (!el) return;
     if (repeat) {
-      el.currentTime = 0;
-      el.play().catch(() => {});
-    } else {
-      setIsPlaying(false);
-      onStop();
+      // Khi loop bật, trình duyệt sẽ tự lặp lại; không gọi onStop để giữ trạng thái đang phát
+      return;
     }
+    setIsPlaying(false);
+    onStop();
   };
 
   const seek = (v: number) => {
