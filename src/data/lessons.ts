@@ -4,10 +4,92 @@ export type Lesson = {
   content: string;
   outcome?: string;
   tasks?: string[];
+  vocabulary?: { term: string; meaning: string; example?: string }[];
+  sentencePatterns?: { pattern: string; example?: string }[];
+  situations?: { title: string; example?: string }[];
+  practice?: { title: string; prompt: string }[];
 };
 
 export const lessons: Lesson[] = [
-  { id: 1, title: "Greeting Visitors", content: "Các mẫu câu chào đón khách hàng/đối tác/vendors khi đến thăm công ty.", outcome: "Tự tin đón tiếp, giao tiếp và hỏi thăm về chuyến thăm." },
+  {
+    id: 1,
+    title: "Greeting Visitors",
+    content:
+      "Các mẫu câu chào đón khách hàng/đối tác/vendors khi đến thăm công ty.",
+    outcome:
+      "Tự tin đón tiếp, giao tiếp và hỏi thăm về chuyến thăm.",
+    vocabulary: [
+      {
+        term: "visitor/guest",
+        meaning: "khách/khách mời",
+        example: "We’re expecting two visitors from our partner.",
+      },
+      { term: "reception", meaning: "quầy lễ tân", example: "Please wait at the reception." },
+      {
+        term: "appointment",
+        meaning: "cuộc hẹn",
+        example: "Do you have an appointment with Ms. Linh?",
+      },
+      { term: "schedule", meaning: "lịch trình", example: "Let me check today’s schedule." },
+      { term: "welcome", meaning: "chào mừng", example: "Welcome to ABC Company!" },
+      {
+        term: "host",
+        meaning: "người tiếp đón/chủ trì",
+        example: "Your host will be here in five minutes.",
+      },
+      {
+        term: "arrive/on time/delay",
+        meaning: "đến/đúng giờ/trì hoãn",
+        example: "Sorry, I’m delayed by 10 minutes.",
+      },
+      { term: "badge/pass", meaning: "thẻ khách/thẻ ra vào", example: "You’ll need a visitor badge." },
+      { term: "meeting room", meaning: "phòng họp", example: "I’ll take you to the meeting room." },
+      { term: "refreshments", meaning: "đồ uống/đồ nhẹ", example: "Would you like some coffee or tea?" },
+      { term: "escort/show around", meaning: "đưa đi/giới thiệu xung quanh", example: "Let me escort you to the lobby." },
+      { term: "lobby", meaning: "sảnh", example: "Please wait in the lobby." },
+    ],
+    sentencePatterns: [
+      { pattern: "Welcome to [Company], I’m [Name].", example: "Welcome to ABC Tech, I’m Minh." },
+      { pattern: "My name is [Name]. I’m a [role].", example: "My name is Linh. I’m a project manager." },
+      { pattern: "Can I get you some [coffee/tea/water]?", example: "Can I get you some water?" },
+      { pattern: "Do you have an appointment with [Name]?", example: "Do you have an appointment with Mr. Nam?" },
+      { pattern: "How was your trip? / Did you find us okay?", example: "How was your trip?" },
+      { pattern: "Let me show you to the meeting room.", example: "Let me show you to the meeting room." },
+      { pattern: "I’m afraid [Name] is running [X] minutes late.", example: "I’m afraid Ms. Hoa is running five minutes late." },
+      { pattern: "Would you like me to [action]?", example: "Would you like me to call a taxi after the meeting?" },
+      { pattern: "It was a pleasure meeting you. Thanks for visiting.", example: "It was a pleasure meeting you. Thanks for visiting." },
+    ],
+    situations: [
+      { title: "Khách đến quầy lễ tân", example: "Welcome to ABC Tech. Do you have an appointment with Ms. Linh?" },
+      { title: "Khách đến sớm/muộn", example: "You’re a bit early—please have a seat. Ms. Linh will be with you shortly." },
+      { title: "Chủ trì đến trễ", example: "I’m afraid Mr. Nam is running ten minutes late. Would you like some coffee while you wait?" },
+      { title: "Phát thẻ khách/đăng ký bảo vệ", example: "Please sign in and take a visitor badge. I’ll escort you upstairs." },
+      { title: "Giới thiệu thành viên", example: "This is Quang, our tech lead. He’ll join the meeting." },
+      { title: "Dẫn khách vào phòng họp, mời nước", example: "Let me show you to the meeting room. Would you like some water?" },
+    ],
+    practice: [
+      {
+        title: "Role-play: Đón khách tại lễ tân",
+        prompt:
+          "Người A là lễ tân/host. Người B là khách đến. Thực hành chào hỏi, kiểm tra appointment, mời nước, xử lý host đến trễ 5 phút.",
+      },
+      {
+        title: "Điền mẫu câu",
+        prompt:
+          "Hoàn thành: “Welcome to ____, I’m ____. Can I get you some ____?”; “I’m afraid ____ is running ____ minutes late.”",
+      },
+      {
+        title: "Viết email ngắn xác nhận lịch",
+        prompt:
+          "Viết email xác nhận lịch thăm công ty vào 10:00, hướng dẫn nơi đậu xe, và số liên hệ khi đến.",
+      },
+      {
+        title: "Chuyển câu thân mật → chuyên nghiệp",
+        prompt:
+          "Chuyển: “Wait here. Boss is late.” → “Please have a seat. I’m afraid our manager is running a few minutes late.”",
+      },
+    ],
+  },
   { id: 2, title: "About the company", content: "Giới thiệu công ty/dự án: cơ cấu team, công nghệ (technology stack), domain.", outcome: "Giới thiệu rõ ràng về công ty/dự án cho đối tác (chạy dâu)." },
   { id: 3, title: "Career", content: "Thảo luận về lộ trình sự nghiệp (career path) trong ngành IT: Developer, Senior, Lead, Manager.", outcome: "Nói về các vị trí làm việc, mục tiêu thăng tiến." },
   { id: 4, title: "Experience", content: "Sử dụng Present Perfect để nói về kinh nghiệm (ví dụ: 'I have used React for 3 years'). Trao đổi với đồng nghiệp/khách về kinh nghiệm dự án.", outcome: "Trình bày các kinh nghiệm, kỹ năng cốt lõi, lưu ý cách dẫn chứng." },
