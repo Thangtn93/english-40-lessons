@@ -112,8 +112,11 @@ foreach ($m in $spMatches) { $spLines += ("{0}. {1}" -f $m.Groups[1].Value, $m.G
 if ($spLines.Count -gt 0) { Export-AudioLines -lines $spLines -prefix "patterns" } else { Write-Host "No sentencePatterns items found." }
 
 # Extract practice samples (sample only)
-$prBlock = Get-Block -source $content -key "practice"
-$prMatches = [regex]::Matches($prBlock, 'sample:\s*"([^"]+)"',
+# Note: Some sample strings may contain square brackets (e.g., "[Name]") which
+# can prematurely terminate a naive array capture with regex. To be robust, we
+# scan the entire lesson file for 'sample: "..."' occurrences instead of
+# restricting to the 'practice' array block.
+$prMatches = [regex]::Matches($content, 'sample:\s*"([^"]+)"',
   [System.Text.RegularExpressions.RegexOptions]::Singleline)
 $prLines = @()
 foreach ($m in $prMatches) { $prLines += $m.Groups[1].Value }
